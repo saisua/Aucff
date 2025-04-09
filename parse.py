@@ -35,15 +35,15 @@ def loads(data: str) -> Any:
             container_stack.append(curr_container)
             if len(line) > 2 and line[2] == Separators.type_separator.value:
                 if len(line) == 4:
-                    key_converter = TypeConvert[line[1]].value
-                    value_converter = TypeConvert[line[3]].value
+                    key_converter = TypeConvert[line[1]]
+                    value_converter = TypeConvert[line[3]]
                 elif len(line) == 3:
                     if line[2] == Separators.type_separator.value:
-                        key_converter = TypeConvert[line[1]].value
+                        key_converter = TypeConvert[line[1]]
                         value_converter = None
                     elif line[1] == Separators.type_separator.value:
                         key_converter = None
-                        value_converter = TypeConvert[line[2]].value
+                        value_converter = TypeConvert[line[2]]
                 converter_stack.append((key_converter, value_converter))
             else:
                 converter_stack.append((None, None))
@@ -54,7 +54,7 @@ def loads(data: str) -> Any:
 
             if len(line) == 3 and line[1] == Separators.type_separator.value:
                 logging.debug("  converter")
-                converter_stack.append(TypeConvert[line[2]].value)
+                converter_stack.append(TypeConvert[line[2]])
             else:
                 converter_stack.append(None)
         elif line[0] == Separators.set_start.value:
@@ -64,7 +64,7 @@ def loads(data: str) -> Any:
 
             if len(line) > 1 and line[1] == Separators.type_separator.value:
                 logging.debug("  converter")
-                converter_stack.append(TypeConvert[line[2]].value)
+                converter_stack.append(TypeConvert[line[2]])
             else:
                 converter_stack.append(None)
         elif isinstance(curr_container, dict):
@@ -74,17 +74,16 @@ def loads(data: str) -> Any:
             if key_converter is not None:
                 key = key_converter(key)
             elif len(key) > 2 and key[1] == Separators.type_separator.value:
-                key = TypeConvert[key[0]].value(key[2:])
+                key = TypeConvert[key[0]](key[2:])
             if value_converter is not None:
                 value = value_converter(value)
             elif len(value) > 2 and value[1] == Separators.type_separator.value:
-                value = TypeConvert[value[0]].value(value[2:])
+                value = TypeConvert[value[0]](value[2:])
             curr_container[key] = value
         else:
             if len(line) != 1 and line[1] == Separators.type_separator.value:
                 logging.debug(" typed value")
-
-                line = TypeConvert[line[0]].value(line[2:])
+                line = TypeConvert[line[0]](line[2:])
             else:
                 logging.debug(" value")
 

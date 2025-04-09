@@ -10,3 +10,7 @@ class TypeRef(StrEnum):
     dict = "d"
     set = "s"
     type = 'T'
+    none = 'n'
+    nan = 'N'
+    inf = 'I'
+    bytes = 'B'

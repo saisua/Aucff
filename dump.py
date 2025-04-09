@@ -45,6 +45,9 @@ def dumps(data, default=None, indent=0):
                 case int():
                     logging.debug(f"  int: {data}")
                     result.append(f"{indent_str}{TypeRef.int}/{str(data)}")
+                case bytes():
+                    logging.debug(f"  bytes: {data}")
+                    result.append(f"{indent_str}{TypeRef.bytes}/{data.decode()}")
                 case list() | tuple() | set():
                     if isinstance(data, set):
                         start_char = Separators.set_start
@@ -126,6 +129,9 @@ def dumps(data, default=None, indent=0):
                         data_buffer.insert(0, group)
                         data_buffer.insert(0, new_group)
                         break
+                case None:
+                    logging.debug(f"  None")
+                    result.append(f"{indent_str}{TypeRef.none}{Separators.type_separator}")
                 case _:
                     logging.debug(f"  other: {data}")
                     if default is None:
@@ -190,3 +196,9 @@ if __name__ == "__main__":
 
     with open(examples / 'single_list_of_dicts.aucff', 'w') as f:
         f.write(dumps([{"a": 1, "b": 2, "c": 3}, {"a": 1, "b": 2, "c": 3}], indent=1))
+
+    with open(examples / 'single_None.aucff', 'w') as f:
+        f.write(dumps(None, indent=1))
+
+    with open(examples / 'single_bytes.aucff', 'w') as f:
+        f.write(dumps(b'Hello, world!', indent=1))
