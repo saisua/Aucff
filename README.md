@@ -1,0 +1,2 @@
+# Aucff
+Custom file format
