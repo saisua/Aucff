@@ -68,15 +68,37 @@ Single dictionary with consistent key and value types, with overloads
 }
 ```
 
-List of dictionaries with consistent key types
+List of dictionaries with consistent key types  # TODO
 ```
-[d/{i/123/s s/hi}
+[
+    /{
+        i/123/s
+        s/hi
+    }
     {
         123: Hello, world!
         hi: b/t
     }
     {
         123: Hello, world!
+        hi: f/1.2
+    }
+]
+```
+
+List of dictionaries with key aliases  # TODO
+```
+[
+    /{
+        i/my_very_long_key@0/s
+        s/hi
+    }
+    {
+        @0: Hello, world!
+        hi: b/t
+    }
+    {
+        @0: Bye, world!
         hi: f/1.2
     }
 ]
